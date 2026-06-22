@@ -169,7 +169,6 @@ function renderMenuV4() {
     card.className = 'hb-card';
 
     if (item.sizes) {
-      // Pizza card with size dropdown
       const sizeKeys = Object.keys(item.sizes);
       const defaultSize = sizeKeys[0];
       const selectId = 'size-sel-' + item.id;
@@ -321,7 +320,6 @@ function openCartV4() {
   if (panel) panel.classList.add('open');
   if (overlay) overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
-  // Show exit buttons, hide open button
   const navCartBtn = document.getElementById('hbNavCartBtn');
   const navExitBtn = document.getElementById('hbNavExitBtn');
   const mobileExitBtn = document.getElementById('mobileExitBtn');
@@ -345,7 +343,7 @@ function closeCartV4() {
   if (mobileExitBtn) mobileExitBtn.style.display = 'none';
 }
 
-function checkoutWhatsAppV4() {
+async function checkoutWhatsAppV4() {
   const nama    = (document.getElementById('hbInputNama')    || {}).value || '';
   const hp      = (document.getElementById('hbInputHp')      || {}).value || '';
   const catatan = (document.getElementById('hbInputCatatan') || {}).value || '';
@@ -353,19 +351,46 @@ function checkoutWhatsAppV4() {
   if (!selectedPaymentV4)         { showToastV4('Pilih metode pembayaran!');     return; }
   if (cartV4.length === 0)        { showToastV4('Keranjang masih kosong!');      return; }
 
+  // Susun string pesanan & pesan WA
   const wa = '6285267347856';
   let msg = 'Halo Halber Artisan Bakery! 🍞\n\nSaya ingin memesan:\n\n';
+  let produkList = [];
   let total = 0;
   cartV4.forEach((item, i) => {
     const sub = item.price * item.qty;
     total += sub;
-    msg += `${i + 1}. ${item.name} x${item.qty} = ${fmtV4(sub)}\n`;
+    const baris = `${item.name} x${item.qty}`;
+    produkList.push(baris);
+    msg += `${i + 1}. ${baris} = ${fmtV4(sub)}\n`;
   });
   msg += `\n*Total: ${fmtV4(total)}*\n\n`;
   msg += `Nama: ${nama.trim()}\nNo. HP: ${hp.trim()}\n`;
   if (catatan.trim()) msg += `Catatan: ${catatan.trim()}\n`;
   msg += `Pembayaran: ${selectedPaymentV4}\n\nTerima kasih! 🙏`;
+
+  // Simpan pesanan ke database
+  try {
+    const formData = new FormData();
+    formData.append('nama',    nama.trim());
+    formData.append('no_wa',   hp.trim());
+    formData.append('produk',  produkList.join(', '));
+    const catatanLengkap = [
+      catatan.trim() ? catatan.trim() : '',
+      'Pembayaran: ' + selectedPaymentV4
+    ].filter(Boolean).join(' | ');
+    formData.append('catatan', catatanLengkap);
+
+    await fetch('../backend/simpan_pesanan.php', { method: 'POST', body: formData });
+  } catch (e) {
+    console.warn('Gagal menyimpan pesanan ke database:', e);
+  }
+
   window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(msg), '_blank');
+
+  cartV4 = [];
+  saveCartV4();
+  updateCartUIV4();
+  showToastV4('Pesanan dikirim! Silakan lanjutkan di WhatsApp. 🎉');
 }
 
 function showToastV4(msg) {
@@ -374,10 +399,9 @@ function showToastV4(msg) {
   el.textContent = msg;
   el.classList.add('show');
   clearTimeout(toastTimerV4);
-  toastTimerV4 = setTimeout(() => el.classList.remove('show'), 2500);
+  toastTimerV4 = setTimeout(() => el.classList.remove('show'), 5000);
 }
 
-// Init on menu page
 document.addEventListener('DOMContentLoaded', () => {
   if (!document.getElementById('hbMenuGrid')) return;
   buildFiltersV4();

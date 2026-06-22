@@ -917,29 +917,36 @@ nav.scrolled {
   padding: 60px 20px 20px;
   font-family: 'DM Sans', sans-serif;
   margin-top: auto;
+  width: 100%; /* WAJIB agar tidak menyusut */
 }
 
 .footer-v1-container {
-  max-width: 1100px;
-  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 48px;
-  margin-bottom: 40px;
-  align-items: start;
-  padding: 0 24px;
+  /* Kolom 1 (Logo) 1.5 bagian, Kolom 2 (Menu) 1 bagian, Kolom 3 (Kontak) 1.2 bagian */
+  grid-template-columns: 1.5fr 1fr 1.2fr; 
+  gap: 40px; 
+  max-width: 1100px; 
+  margin: 0 auto;  /* Kunci Utama di Tengah */
+  padding: 20px 20px 40px 20px;
 }
 
+.footer-v1-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Kolom Tautan Cepat */
 .footer-v1-col.footer-col-middle {
+  align-items: center;
   text-align: center;
-  justify-self: center;
-  width: 100%;
 }
 .footer-v1-col.footer-col-middle h4::after {
   left: 50%;
   transform: translateX(-50%);
 }
-.footer-v1-col.footer-col-middle .footer-v1-links { text-align: center; }
+.footer-v1-col.footer-col-middle .footer-v1-links { 
+  text-align: center; 
+}
 
 .footer-v1-brand .brand-name {
   font-family: 'Playfair Display', serif;
@@ -954,6 +961,7 @@ nav.scrolled {
   line-height: 1.6;
   color: rgba(240, 232, 208, 0.8);
   margin-bottom: 20px;
+  max-width: 380px;
 }
 
 .footer-v1-social {
@@ -985,6 +993,7 @@ nav.scrolled {
   margin-bottom: 20px;
   position: relative;
   padding-bottom: 10px;
+  width: fit-content;
 }
 .footer-v1-col h4::after {
   content: '';
@@ -1101,8 +1110,50 @@ nav.scrolled {
   .about-logo-wrap { padding: 36px; }
   .page-header   { padding: 120px 24px 50px; }
 
+  /* Responsive Footer */
   .footer-v1-container {
     grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 20px 20px 40px 20px;
+  }
+  .footer-v1-col.footer-col-middle {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .footer-v1-col.footer-col-middle h4::after {
+    left: 0;
+    transform: none;
+  }
+  .footer-v1-col.footer-col-middle .footer-v1-links {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content h1 { font-size: 2.8rem; }
+  .stats-grid      { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+
+/* ============================================================
+   MENU PAGE — Navbar Cart Button, Slide Cart Panel
+   ============================================================ */
+@media (max-width: 768px) {
+  nav { padding: 12px 20px; }
+  .nav-links, .nav-order-btn { display: none; }
+  .hamburger { display: flex; }
+
+  .section       { padding: 60px 20px; }
+  .stats-grid    { grid-template-columns: repeat(2, 1fr); }
+  .why-grid      { grid-template-columns: 1fr; gap: 16px; }
+  .featured-grid { grid-template-columns: 1fr; }
+  .lokasi-wrapper { grid-template-columns: 1fr; gap: 28px; }
+  .about-logo-wrap { padding: 36px; }
+  .page-header   { padding: 120px 24px 50px; }
+
+  /* Responsive Footer via Flexbox */
+  .footer-v1-container {
+    flex-direction: column;
+    gap: 32px;
   }
   .footer-v1-col.footer-col-middle {
     text-align: left;
@@ -1700,6 +1751,11 @@ nav.scrolled {
 
   .ulasan-form-box { padding: 24px; }
   .form-group select { font-size: 13px; width: 100%; }
+
+  .cart-icon {
+    margin-left: auto !important;
+    margin-right: 20px !important;
+  }
 }
 
 @media (hover: none) and (pointer: coarse) {
