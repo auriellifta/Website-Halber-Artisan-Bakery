@@ -917,16 +917,15 @@ nav.scrolled {
   padding: 60px 20px 20px;
   font-family: 'DM Sans', sans-serif;
   margin-top: auto;
-  width: 100%; /* WAJIB agar tidak menyusut */
+  width: 100%; 
 }
 
 .footer-v1-container {
   display: grid;
-  /* Kolom 1 (Logo) 1.5 bagian, Kolom 2 (Menu) 1 bagian, Kolom 3 (Kontak) 1.2 bagian */
   grid-template-columns: 1.5fr 1fr 1.2fr; 
   gap: 40px; 
   max-width: 1100px; 
-  margin: 0 auto;  /* Kunci Utama di Tengah */
+  margin: 0 auto;
   padding: 20px 20px 40px 20px;
 }
 

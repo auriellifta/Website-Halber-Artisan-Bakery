@@ -2,7 +2,6 @@
 require '../backend/koneksi.php';
 require '../backend/auth.php';
 
-// kalau sudah login, langsung lempar ke dashboard
 if (isset($_SESSION['admin_id'])) {
     header('Location: dashboard.php');
     exit;
@@ -22,9 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $admin = mysqli_fetch_assoc($hasil);
         mysqli_stmt_close($stmt);
 
-        // KEMBALI KE COCOKAN BIASA (Plain-text tanpa hash)
         if ($admin && $password === $admin['password']) {
-            // regenerasi session id untuk mencegah session fixation
             session_regenerate_id(true);
             $_SESSION['admin_id']       = $admin['id'];
             $_SESSION['admin_username'] = $admin['username'];
