@@ -11,7 +11,7 @@
   --text-mid:   #4a4a6a;
   --danger:     #c53030;
   --success:    #2f7d4f;
-  --shadow:     0 4px 24px rgba(26, 63, 160, 0.10);
+  --shadow:     0 4px 20px rgba(26, 63, 160, 0.13), 0 0 0 1.5px rgba(26, 63, 160, 0.08);
   --shadow-lg:  0 16px 48px rgba(26, 63, 160, 0.18);
 }
 
@@ -19,7 +19,7 @@
 
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--cream);
+  background: #ffffff;
   color: var(--text-dark);
 }
 

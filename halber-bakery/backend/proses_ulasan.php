@@ -66,7 +66,6 @@ if ($action === 'kirim') {
         exit;
     }
 
-    // Pastikan no_wa masih ada di pesanan (double-check, anti-bypass)
     $cek = mysqli_prepare($koneksi, "SELECT id FROM pesanan WHERE no_wa = ? LIMIT 1");
     mysqli_stmt_bind_param($cek, 's', $no_wa);
     mysqli_stmt_execute($cek);
